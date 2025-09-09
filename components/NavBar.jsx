@@ -16,15 +16,9 @@ const NavBar = () => {
             </Link>
             <Link
               className="text-2xl m-4 hover:text-slate-500 transition duration-400"
-              to="pokemon"
+              to="myroster"
             >
-              Pokemon
-            </Link>
-            <Link
-              className="text-2xl m-4 hover:text-slate-500 transition duration-400"
-              to="myrooster"
-            >
-              My rooster
+              My roster
             </Link>
             <Link
               className="text-2xl m-4 hover:text-slate-500 transition duration-400"
