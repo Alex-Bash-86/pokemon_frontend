@@ -4,7 +4,7 @@ const NavBar = () => {
   return (
     <nav className="w-full bg-red-950">
       <div>
-        <p className="text-4xl flex justify-center">Test Project Page</p>
+        <p className="text-4xl flex justify-center">Pokemon Battle Contest</p>
         <p></p>
         <ul>
           <li className="flex justify-center">
