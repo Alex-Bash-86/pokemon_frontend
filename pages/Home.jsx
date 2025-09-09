@@ -47,14 +47,17 @@ const Home = () => {
   // }
 
   return (
-    <div className="flex flex-wrap max-w-[1400px] mx-auto">
+    <div className="flex flex-col flex-wrap max-w-[1400px] mx-auto">
       <div className=" text-2xl flex flex-wrap mx-auto m-4">Pokemon</div>
+      <div className=" text-2xl flex flex-wrap mx-auto mb-4 bg-red-500">
+        Filter comig soon (maybe)
+      </div>
       <div className="flex flex-col mx-auto">
         <button
           className="btn self-center bg-slate-700 hover:bg-slate-600"
           onClick={() => setLimit(limitInput)}
         >
-          Load {limitInput} Pokemon
+          Click to load {limitInput} Pokemon
         </button>
 
         <input
@@ -63,7 +66,7 @@ const Home = () => {
           id="limit"
           min={1}
           max={1302}
-          defaultValue={25}
+          defaultValue={150}
           value={limitInput}
           onChange={(e) => setLimitInput(Number(e.target.value))}
         />
@@ -83,7 +86,7 @@ const Home = () => {
                   onClick={() => navigate(`/pokemonDetails/${element.id}`)}
                   className="cursor-pointer bg-white rounded shadow m-4 w-40"
                 >
-                  <p className="text-black text-center">ID: {index + 1}</p>
+                  <p className="text-black text-center"># {index + 1}</p>
                   <img
                     src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
                       index + 1
@@ -102,7 +105,7 @@ const Home = () => {
                       </span>
                     ))}
                   </div>
-                  <p className="text-black text-center capitalize">
+                  <p className="text-black text-center capitalize mb-2">
                     {element.name}
                   </p>
                 </div>

@@ -1,27 +1,54 @@
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 
+const pokeStorage = "pokemon_roster";
+
 const PokemonDetails = () => {
-  const { id } = useParams(); // ID aus URL
+  const { id } = useParams();
   const [pokemon, setPokemon] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isInRoster, setIsInRoster] = useState(false);
 
   useEffect(() => {
+    setError(null);
+    setLoading(true);
     const fetchPokemon = async () => {
       try {
-        const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`);
-        if (!res.ok) throw new Error("Failed to load Pokemon");
-        const data = await res.json();
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+        const data = await response.json();
         setPokemon(data);
+
+        const stored = localStorage.getItem(pokeStorage);
+        if (stored) {
+          const roster = JSON.parse(stored);
+          setIsInRoster(roster.some((p) => p.id === data.id));
+        }
       } catch (err) {
-        setError(err.message);
+        console.error("Failed to fetch:", err);
       } finally {
         setLoading(false);
       }
     };
     fetchPokemon();
   }, [id]);
+
+  const handleAddToRoster = () => {
+    const stored = localStorage.getItem(pokeStorage);
+    let roster = stored ? JSON.parse(stored) : [];
+
+    if (!roster.some((p) => p.id === pokemon.id)) {
+      const pokemonData = {
+        id: pokemon.id,
+        name: pokemon.name,
+        spriteUrl: pokemon.sprites.front_default,
+        types: pokemon.types.map((t) => t.type.name),
+      };
+      roster.push(pokemonData);
+      localStorage.setItem(pokeStorage, JSON.stringify(roster));
+      setIsInRoster(true);
+    }
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
@@ -37,22 +64,30 @@ const PokemonDetails = () => {
         className="mx-auto my-4 w-60"
       />
       <div className="flex justify-center gap-2">
-        {pokemon.types.map((t) => (
+        {pokemon.types.map((types) => (
           <span
-            key={t.slot}
+            key={types.slot}
             className="px-3 py-1 rounded bg-slate-700 text-white capitalize"
           >
-            {t.type.name}
+            {types.type.name}
           </span>
         ))}
       </div>
       <div className="mt-4 text-center">
         <h2 className="text-xl font-semibold">Stats</h2>
-        {pokemon.stats.map((s) => (
-          <p className="capitalize" key={s.stat.name}>
-            {s.stat.name}: {s.base_stat}
+        {pokemon.stats.map((stats) => (
+          <p className="capitalize" key={stats.stat.name}>
+            {stats.stat.name}: {stats.base_stat}
           </p>
         ))}
+      </div>
+      <div className="flex justify-center mt-4">
+        <button
+          className="btn mt-6 w-full py-2 rounded"
+          onClick={handleAddToRoster}
+        >
+          {isInRoster ? "Is already in roster" : "Add to roster"}
+        </button>
       </div>
     </div>
   );
