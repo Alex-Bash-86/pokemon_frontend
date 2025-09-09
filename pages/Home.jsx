@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 const Home = () => {
+  const navigate = useNavigate();
   const [data, setData] = useState();
   const [error, setError] = useState();
   const [loading, setLoading] = useState();
-  const [limit, setLimit] = useState(25);
+  const [limit, setLimit] = useState(150);
   const [limitInput, setLimitInput] = useState();
 
   useEffect(() => {
@@ -78,7 +80,8 @@ const Home = () => {
               data.map((element, index) => (
                 <div
                   key={element.name}
-                  className="bg-white rounded shadow m-4 w-40"
+                  onClick={() => navigate(`/pokemonDetails/${element.id}`)}
+                  className="cursor-pointer bg-white rounded shadow m-4 w-40"
                 >
                   <p className="text-black text-center">ID: {index + 1}</p>
                   <img
@@ -96,16 +99,6 @@ const Home = () => {
                         className="px-2 py-1 rounded text-black text-xs capitalize"
                       >
                         {t.type.name}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="flex flex-col justify-between mb-2">
-                    {element.stats.map((stats) => (
-                      <span
-                        className="text-black border border-black flex justify-between"
-                        key={stats.base_stat}
-                      >
-                        {stats.stat.name}:{stats.base_stat}
                       </span>
                     ))}
                   </div>
