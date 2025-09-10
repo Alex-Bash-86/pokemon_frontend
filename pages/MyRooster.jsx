@@ -22,14 +22,14 @@ const MyRoster = () => {
       const data = await res.json();
 
       const detailed = await Promise.all(
-        data.results.map(async (p) => {
+        data.results.map(async p => {
           const pokeRes = await fetch(p.url);
           const pokeData = await pokeRes.json();
           return {
             id: pokeData.id,
             name: pokeData.name,
             stats: pokeData.stats,
-            types: pokeData.types.map((t) => t.type.name),
+            types: pokeData.types.map(t => t.type.name)
           };
         })
       );
@@ -50,8 +50,8 @@ const MyRoster = () => {
     }
   }, []);
 
-  const handleRemove = (id) => {
-    const updated = roster.filter((p) => p.id !== id);
+  const handleRemove = id => {
+    const updated = roster.filter(p => p.id !== id);
     localStorage.setItem(pokeStorage, JSON.stringify(updated));
     setRoster(updated);
   };
@@ -63,25 +63,31 @@ const MyRoster = () => {
   return (
     <div className="flex flex-wrap max-w-[1400px] mx-auto text-black">
       <div className="flex flex-col mx-auto">
-        {roster.map((element) => (
+        {roster.map(element => (
           <div
             key={element.id}
-            onClick={() => navigate(`/pokemonDetails/${element.id}`)}
             className="cursor-pointer bg-white rounded shadow flex flex-col items-center m-4 w-45"
           >
             <p className="w-full px-3 py-1 rounded bg-slate-700 text-white text-center capitalize mt-2">
               {element.name}
             </p>
-            <img src={element.spriteUrl} alt={element.name} />
+            <img
+              onClick={() => navigate(`/pokemonDetails/${element.id}`)}
+              src={element.spriteUrl}
+              alt={element.name}
+            />
             <div className="flex justify-center gap-2 text-black">
               Type:
-              {element.types.map((t) => (
+              {element.types.map(t => (
                 <span key={t} className="py-1 text-black text-xs capitalize">
                   {t}
                 </span>
               ))}
             </div>
-            <button className="mt-2 mb-2 px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-500 cursor-pointer">
+            <button
+              onClick={() => navigate("/battle")}
+              className="mb-2 px-3 py-1 bg-slate-700 text-white rounded hover:bg-slate-600 cursor-pointer"
+            >
               Choose for fight
             </button>
             <button
