@@ -27,6 +27,13 @@ const Leaderboard = () => {
   if (loading) return <div className="text-center text-white mt-20">Loading...</div>;
   if (error) return <div className="text-center text-red-500 mt-20">{error}</div>;
 
+  const getRankClass = (index) => {
+    if (index === 0) return "!bg-yellow-500 text-black font-bold"; // Gold
+    if (index === 1) return "!bg-gray-400 text-black font-bold";   // Silber
+    if (index === 2) return "!bg-amber-700 text-white font-bold";  // Bronze
+    return "";
+  };
+
   return (
     <div className="flex flex-col items-center max-w-[1400px] mx-auto p-4">
       <h1 className="text-4xl font-bold mb-6 text-white">Player results table</h1>
@@ -41,7 +48,7 @@ const Leaderboard = () => {
           </thead>
           <tbody>
             {players.map((player, index) => (
-              <tr key={player.id}>
+              <tr key={player.id} className={getRankClass(index)}>
                 <td>{index + 1}</td>
                 <td>{player.username}</td>
                 <td>{player.score}</td>
