@@ -63,6 +63,7 @@ const MyRoster = () => {
   return (
     <div className="flex flex-wrap max-w-[1400px] mx-auto text-black">
       <div className="flex flex-col mx-auto">
+        <div className="flex flex-wrap border">
         {roster.map(element => (
           <div
             key={element.id}
@@ -98,6 +99,7 @@ const MyRoster = () => {
             </button>
           </div>
         ))}
+          </div>
       </div>
     </div>
   );
