@@ -91,9 +91,9 @@ const Home = () => {
                 >
                   <p className="text-black text-center"># {index + 1}</p>
                   <img
-                    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
-                      index + 1
-                    }.png`}
+                    src={
+                      element.sprites.other["official-artwork"].front_default
+                    }
                     alt={element.name}
                     className="mx-auto mb-2"
                   />
