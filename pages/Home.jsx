@@ -21,7 +21,7 @@ const Home = () => {
         const data = await response.json();
 
         const detailedData = await Promise.all(
-          data.results.map(async (pokemon) => {
+          data.results.map(async pokemon => {
             const res = await fetch(pokemon.url);
             return await res.json();
           })
@@ -70,7 +70,7 @@ const Home = () => {
           max={1302}
           defaultValue={150}
           value={limitInput}
-          onChange={(e) => setLimitInput(Number(e.target.value))}
+          onChange={e => setLimitInput(Number(e.target.value))}
         />
         <label className="text-2xl text-center">First {limit} Pokemon</label>
         <p className="text-center text-xs">click on Pokemon for details</p>
@@ -87,19 +87,18 @@ const Home = () => {
                 <div
                   key={element.name}
                   onClick={() => navigate(`/pokemonDetails/${element.id}`)}
-                  className="cursor-pointer bg-white rounded shadow m-4 w-40"
+                  className="cursor-pointer bg-white rounded shadow m-4 w-60 px-4"
                 >
                   <p className="text-black text-center"># {index + 1}</p>
                   <img
-                    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
-                      index + 1
-                    }.png`}
+                    src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${index +
+                      1}.svg`}
                     alt={element.name}
-                    className="mx-auto mb-2"
+                    className="mx-auto mb-2 w-[200px] h-[200px]"
                   />
                   <div className="flex justify-center gap-2 mb-2 text-black">
                     Type:
-                    {element.types.map((t) => (
+                    {element.types.map(t => (
                       <span
                         key={t.slot}
                         className="text-black text-xs capitalize"
