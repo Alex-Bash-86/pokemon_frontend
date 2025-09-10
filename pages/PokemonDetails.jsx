@@ -37,11 +37,12 @@ const PokemonDetails = () => {
     const stored = localStorage.getItem(pokeStorage);
     let roster = stored ? JSON.parse(stored) : [];
 
-    if (!roster.some((p) => p.id === pokemon.id)) {
+    if (!roster.some((element) => element.id === pokemon.id)) {
       const pokemonData = {
         id: pokemon.id,
         name: pokemon.name,
         spriteUrl: pokemon.sprites.front_default,
+        stats: pokemon.stats,
         types: pokemon.types.map((t) => t.type.name),
       };
       roster.push(pokemonData);
