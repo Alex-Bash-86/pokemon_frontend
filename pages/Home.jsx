@@ -102,13 +102,13 @@ const Home = () => {
                     {element.types.map((t) => (
                       <span
                         key={t.slot}
-                        className="px-2 py-1 rounded text-black text-xs capitalize"
+                        className="text-black text-xs capitalize"
                       >
                         {t.type.name}
                       </span>
                     ))}
                   </div>
-                  <p className="text-black text-center capitalize mb-2">
+                  <p className="px-3 py-1 rounded bg-slate-700 text-white text-center capitalize mb-2">
                     {element.name}
                   </p>
                 </div>
