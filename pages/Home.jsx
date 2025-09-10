@@ -7,7 +7,7 @@ const Home = () => {
   const [error, setError] = useState();
   const [loading, setLoading] = useState();
   const [limit, setLimit] = useState(150);
-  const [limitInput, setLimitInput] = useState();
+  const [limitInput, setLimitInput] = useState(150);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,7 +59,9 @@ const Home = () => {
         >
           Click to load {limitInput} Pokemon
         </button>
-
+        <p className="text-center text-xs">
+          (adjust the bar to choose the number)
+        </p>
         <input
           className="w-[1000px] self-center m-4"
           type="range"
@@ -71,6 +73,7 @@ const Home = () => {
           onChange={(e) => setLimitInput(Number(e.target.value))}
         />
         <label className="text-2xl text-center">First {limit} Pokemon</label>
+        <p className="text-center text-xs">click on Pokemon for details</p>
         {loading && (
           <p className="text-center text-white font-medium">Loading...</p>
         )}
