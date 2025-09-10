@@ -29,7 +29,7 @@ const MyRoster = () => {
           {roster.map((element) => (
             <div
               key={element.id}
-              className="bg-white rounded shadow p-4 flex flex-col items-center m-4 w-40"
+              className="bg-white rounded shadow p-4 flex flex-col items-center m-4 w-45"
             >
               <img src={element.spriteUrl} alt={element.name} />
               <div className="flex justify-center gap-2 text-black">
@@ -44,9 +44,12 @@ const MyRoster = () => {
                 ))}
               </div>
               <h2 className="capitalize mb-2">{element.name}</h2>
+              <button className="mt-2 mb-2 px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-500 cursor-pointer">
+                Choose for fight
+              </button>
               <button
                 onClick={() => handleRemove(element.id)}
-                className="mt-auto px-3 py-1 bg-red-600 text-white rounded hover:bg-red-500"
+                className="mt-2 px-3 py-1 bg-red-600 text-white rounded hover:bg-red-500 cursor-pointer"
               >
                 Remove
               </button>
