@@ -67,12 +67,13 @@ const MyRoster = () => {
         {roster.map(element => (
           <div
             key={element.id}
-            className="cursor-pointer bg-white rounded shadow flex flex-col items-center m-4 w-45"
+            className="bg-white rounded shadow flex flex-col items-center m-4 w-45"
           >
             <p className="w-full px-3 py-1 rounded bg-slate-700 text-white text-center capitalize mt-2">
               {element.name}
             </p>
             <img
+              className="cursor-pointer"
               onClick={() => navigate(`/pokemonDetails/${element.id}`)}
               src={element.spriteUrl}
               alt={element.name}
