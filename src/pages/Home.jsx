@@ -158,6 +158,13 @@ const Home = () => {
                       alt={element.name}
                       className="mx-auto mb-2 w-[200px] h-[200px]"
                     />
+                    {/*  <img
+                      src={
+                        element.sprites.other["official-artwork"].front_default
+                      }
+                      alt={element.name}
+                      className="mx-auto mb-2 w-[200px] h-[200px]"
+                    /> */}
                     <div className="flex justify-center items-center gap-2 mb-2 text-black text-md">
                       <span className="py-4 text-black text-md capitalize">
                         Type: {element.types.map(t => t.type.name).join(", ")}

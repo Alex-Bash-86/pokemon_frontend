@@ -2,7 +2,7 @@ import { Link } from "react-router";
 
 const NavBar = () => {
   return (
-    <nav className="  w-full bg-red-950">
+    <nav className="bg-red-950">
       <div>
         <p className="text-2xl sm:text-4xl flex justify-center font-bold py-2">
           Pokemon Battle Contest

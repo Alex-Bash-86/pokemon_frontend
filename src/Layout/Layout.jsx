@@ -4,13 +4,13 @@ import NavBar from "../components/NavBar.jsx";
 
 const Layout = () => {
   return (
-    <div className="flex flex-col h-screen">
-      <NavBar className="flex justify-center" />
-      <main className="grow my-8 ">
+    <>
+      <NavBar />
+      <main className="my-8 ">
         <Outlet />
       </main>
       <Footer />
-    </div>
+    </>
   );
 };
 
