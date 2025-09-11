@@ -1,2 +1,7 @@
+/* @import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap"); */
+@import url("https://db.onlinewebfonts.com/c/cf3cc1ab7c5623ed6d4a804441211a9c?family=Monaspace+Xenon+Var:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: dark --default;
+}

@@ -56,7 +56,7 @@ const PokemonDetails = () => {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="mt-4 max-w-[800px] mx-auto p-4 bg-white rounded shadow text-black">
+    <div className="mt-4 max-w-[800px]  max-h-full mx-auto p-4 bg-white rounded shadow text-black overflow-hidden transition-transform duration-200 hover:scale-105 hover:drop-shadow-[0_0_10px_#362617]">
       <h1 className="text-3xl font-bold capitalize text-center">
         {pokemon.name}
       </h1>
@@ -69,23 +69,25 @@ const PokemonDetails = () => {
         {pokemon.types.map(types => (
           <span
             key={types.slot}
-            className="px-3 py-1 rounded bg-slate-700 text-white capitalize"
+            className="px-3 py-1 rounded border border-slate-700 text-black capitalize"
           >
             {types.type.name}
           </span>
         ))}
       </div>
-      <div className="mt-4 text-center">
-        <h2 className="text-xl font-semibold">Stats</h2>
-        {pokemon.stats.map(stats => (
-          <p className="capitalize" key={stats.stat.name}>
-            {stats.stat.name}: {stats.base_stat}
-          </p>
-        ))}
+      <div className="mt-4 ">
+        <h2 className="text-xl text-center font-semibold">Stats</h2>
+        <div className="mt-4 grid  grid-cols-1 sm:grid-cols-2 place-items-center mx-auto gap-2">
+          {pokemon.stats.map(stats => (
+            <p className="capitalize text-left text-xl" key={stats.stat.name}>
+              {stats.stat.name}: {stats.base_stat}
+            </p>
+          ))}
+        </div>
       </div>
       <div className="flex justify-center mt-4">
         <button
-          className="btn mt-6 w-full py-2 rounded"
+          className="btn btn-xl   mt-6 w-full py-2 rounded-lg"
           onClick={handleAddToRoster}
         >
           {isInRoster ? "Is already in roster" : "Add to roster"}

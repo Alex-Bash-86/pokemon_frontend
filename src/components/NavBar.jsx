@@ -2,32 +2,34 @@ import { Link } from "react-router";
 
 const NavBar = () => {
   return (
-    <nav className="w-full bg-red-950">
+    <nav className="  w-full bg-red-950">
       <div>
-        <p className="text-4xl flex justify-center">Pokemon Battle Contest</p>
+        <p className="text-2xl sm:text-4xl flex justify-center font-bold py-2">
+          Pokemon Battle Contest
+        </p>
         <p></p>
-        <ul>
+        <ul className="text-xs sm:text-2xl">
           <li className="flex justify-center">
             <Link
-              className="text-2xl m-4 hover:text-slate-500 transition duration-400"
+              className=" m-4 hover:text-slate-500 transition duration-400"
               to="/"
             >
               Home
             </Link>
             <Link
-              className="text-2xl m-4 hover:text-slate-500 transition duration-400"
+              className=" m-4 hover:text-slate-500 transition duration-400"
               to="myroster"
             >
               My roster
             </Link>
             <Link
-              className="text-2xl m-4 hover:text-slate-500 transition duration-400"
+              className=" m-4 hover:text-slate-500 transition duration-400"
               to="battle"
             >
               Battle
             </Link>
             <Link
-              className="text-2xl m-4 hover:text-slate-500 transition duration-400"
+              className=" m-4 hover:text-slate-500 transition duration-400"
               to="leaderboard"
             >
               Leaderboard
