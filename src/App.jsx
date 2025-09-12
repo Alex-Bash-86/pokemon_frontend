@@ -1,4 +1,6 @@
-import { Route, Routes } from "react-router";
+import { Route, Routes } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "./contexts/AuthContext.jsx";
 import Home from "./pages/Home.jsx";
 import PokemonDetails from "./pages/PokemonDetails.jsx";
 import MyRooster from "./pages/MyRooster.jsx";
@@ -9,6 +11,9 @@ import SignUp from "./pages/SignUp.jsx";
 import Login from "./pages/Login.jsx";
 
 const App = () => {
+  const { isRefreshing } = useContext(AuthContext);
+  if (isRefreshing) return <div>Loading...</div>;
+
   return (
     <div className=" min-h-screen  w-full grid grid-rows-[auto_1fr_auto] font-['Monaspace_Xenon_Var'] ">
       <Routes>
