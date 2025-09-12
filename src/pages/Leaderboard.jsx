@@ -8,7 +8,7 @@ const Leaderboard = () => {
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        const res = await fetch("http://localhost:3000/leaderboard");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/leaderboard`);
         if (!res.ok) throw new Error("Failed to fetch leaderboard");
         const data = await res.json();
         // Sortiere die Spieler nach Score absteigend

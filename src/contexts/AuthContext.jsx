@@ -11,13 +11,13 @@ const AuthContextProvider = ({children}) => {
 
     const signup = async (formState) => {
         try {
-            const res = await fetch("http://localhost:3000/users", {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/users`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(formState),    
-                credentials: "include",
+                credentials: "include"
             });
 
             if (!res.ok) throw new Error("Signup failed");
@@ -25,10 +25,10 @@ const AuthContextProvider = ({children}) => {
             
             setUser(data.data);
 
-            alert("Signup successful! Please log in.");
+            alert(`Signup successful, ${data.data.username}! Please log in.`);
             
             navigate('/login');
-            console.log("Signup successful", data);
+            console.log("Signup successful");
             
         } catch (error) {
             console.log(error);
@@ -38,7 +38,7 @@ const AuthContextProvider = ({children}) => {
 
     const login = async (formState) => {
         try {
-            const res = await fetch("http://localhost:3000/users/login", {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/users/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -49,13 +49,14 @@ const AuthContextProvider = ({children}) => {
 
             if (!res.ok) throw new Error("Login failed");
             const data = await res.json();
+            //console.log(data);
             
             setUser(data.data);
 
-            alert(`Login successful, ${data.data.firstName}`);
-            console.log(`Login successful, ${data.data.firstName}`);
+            alert(`Login successful, ${data.data.username}. Role: ${data.data.role}`);
+            console.log(`Login successful, ${data.data.username}`);
 
-            navigate('/leaderboard');
+            navigate('/');
         }
         catch (error) {
             console.log(error);
@@ -64,7 +65,7 @@ const AuthContextProvider = ({children}) => {
     
     const logout = async () => {
         try {
-            const res = await fetch("http://localhost:3000/users/logout", {
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/users/logout`, {
                 method: "DELETE",
                 credentials: "include",
             }); 
@@ -77,32 +78,30 @@ const AuthContextProvider = ({children}) => {
             navigate('/');
 
             alert(msg);
-            alert("Logout successful");
+            //alert("Logout successful");
             console.log("Logout successful");
         } catch (error) {
+            alert("Logout failed");
             console.log(error);
         }
     };
 
     useEffect(() => {
         const refresh = async () => {
-            try {
-                const res = await fetch("http://localhost:3000/users/me", {
-                    method: "GET",
-                    credentials: "include",
-                });
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/users/me`, {
+                method: "GET",
+                credentials: "include",
+            });
 
-                if (!res.ok) throw new Error("Please log in again");
-      const { data } = await res.json();
-      setUser(data);
-    } catch {
-      setUser(null);   // User null, aber nicht direkt navigieren
-    } finally {
-      setIsRefreshing(false); // <- immer false setzen
-    }
-  };
-  refresh();
-    }, [navigate]);
+            const {data} = await res.json();
+
+            setUser(data.data);
+            setIsRefreshing(false);
+        };
+
+        refresh();
+                
+    }, []);
 
 
   return (
