@@ -34,6 +34,18 @@ const NavBar = () => {
             >
               Leaderboard
             </Link>
+            <Link
+              className=" m-4 hover:text-slate-500 transition duration-400"
+              to="signup"
+            >
+              Sing Up
+            </Link>
+            <Link
+              className=" m-4 hover:text-slate-500 transition duration-400"
+              to="login"
+            >
+              Login
+            </Link>
           </li>
         </ul>
       </div>
