@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
 const Signup = () => {
   const [formState, setFormState] = useState({
@@ -7,13 +9,16 @@ const Signup = () => {
   });
   const [confirmPW, setConfirmPW] = useState("");
 
+  const { signup } = useContext(AuthContext);
+
   const handleInput = (e) =>
     setFormState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (confirmPW !== formState.password) return;
-    alert("SIGNUP SUCCESS");
+    //alert("SIGNUP SUCCESS");
+    signup(formState);
   };
 
   return (

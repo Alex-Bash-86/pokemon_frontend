@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 
 const Login = () => {
   const [formState, setFormState] = useState({
@@ -8,12 +9,14 @@ const Login = () => {
 
   const [isOpen, setIsOpen] = useState(true);
 
+  const { login } = useContext(AuthContext);
+
   const handleInput = (e) =>
     setFormState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert("LOGIN SUCCESS");
+    login(formState);
     setIsOpen(false);
   };
 
