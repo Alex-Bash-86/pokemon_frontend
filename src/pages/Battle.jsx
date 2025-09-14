@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { nanoid } from "nanoid";
 
@@ -6,6 +8,7 @@ const Battle = () => {
     return JSON.parse(localStorage.getItem("pokemon_roster")).slice(0, 3) || [];
   }); */
 
+  const { user } = useContext(AuthContext);
   const [message, setMessage] = useState("");
   const [fightData, setFightData] = useState([]);
 
@@ -107,7 +110,7 @@ const Battle = () => {
     checkWhoWins(results);
   };
 
-  const checkWhoWins = results => {
+  const checkWhoWins = async (results) => {
     let myNumberOfWins = 0;
     let numberOfComputerWins = 0;
 
@@ -124,13 +127,36 @@ const Battle = () => {
 
     console.log("myNumberOfWins", myNumberOfWins);
     console.log("numberOfComputerWins", numberOfComputerWins);
+
+    let scoreToAdd = 0;
+
     if (myNumberOfWins === numberOfComputerWins) {
       setMessage("It's a draw");
+      scoreToAdd = 50;
     } else if (myNumberOfWins > numberOfComputerWins) {
       setMessage(`You won ${results[0].pokemonFighter.name} !`);
+      scoreToAdd = 100;
     } else {
       setMessage("You lost");
+      scoreToAdd = 0;
     }
+
+    // send score to the backend
+    if (user?.username) {
+      try {
+        await fetch(`${import.meta.env.VITE_API_URL}/leaderboard/update`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ username: user.username, score: scoreToAdd }),
+        });
+      } catch (err) {
+        console.error("Failed to update leaderboard:", err);
+      }
+    }
+
   };
 
   const handleNewPcPokemon = () => {
