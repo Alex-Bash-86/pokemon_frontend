@@ -144,8 +144,7 @@ const Battle = () => {
     // send score to the backend
     if (user?.username) {
       try {
-        const baseUrl = import.meta.env.VITE_API_URL || "https://pokemon-backend-bccr.onrender.com";
-        await fetch(`${baseUrl}/leaderboard/update`, {
+        await fetch(`${import.meta.env.VITE_API_URL}/leaderboard/update`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
