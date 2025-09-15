@@ -2,15 +2,11 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 import { me } from "../data/auth.js";
 
-import { toast } from "react-toastify";
-
 const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(true);
-
- 
 
   useEffect(() => {
     const refresh = async () => {
