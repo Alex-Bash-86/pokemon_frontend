@@ -1,6 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import AuthContext from "../contexts/AuthContext.jsx";
 
 const Leaderboard = () => {
+  const { user, setUser, isRefreshing, setIsRefreshing } = useContext(
+    AuthContext
+  );
   const [players, setPlayers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -8,7 +12,9 @@ const Leaderboard = () => {
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {
-        const res = await fetch("http://localhost:3000/leaderboard");
+        const res = await fetch("http://localhost:3000/leaderboard", {
+          credentials: "include"
+        });
         if (!res.ok) throw new Error("Failed to fetch leaderboard");
         const data = await res.json();
         // Sortiere die Spieler nach Score absteigend

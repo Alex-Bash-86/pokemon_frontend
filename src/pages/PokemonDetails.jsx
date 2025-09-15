@@ -1,15 +1,20 @@
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
+import { useToast } from "../contexts/ToasterContext.jsx";
 
 const pokeStorage = "pokemon_roster";
 
 const PokemonDetails = () => {
+  const { showToast } = useToast();
   const { id } = useParams();
   const [pokemon, setPokemon] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isInRoster, setIsInRoster] = useState(false);
 
+  const [roster, setRoster] = useState(() => {
+    return JSON.parse(localStorage.getItem("pokemon_roster")) || [];
+  });
   useEffect(() => {
     setError(null);
     setLoading(true);
@@ -19,11 +24,16 @@ const PokemonDetails = () => {
         const data = await response.json();
         setPokemon(data);
 
-        const stored = localStorage.getItem(pokeStorage);
-        if (stored) {
-          const roster = JSON.parse(stored);
-          setIsInRoster(roster.some(p => p.id === data.id));
+        // Check if the Pokémon is already in the roster
+        const isAlreadyInRoster = roster.some(p => p.id === data.id);
+        if (isAlreadyInRoster) {
+          setIsInRoster(true);
         }
+        /* const stored = localStorage.getItem(pokeStorage);
+        if (stored) {
+          const rosters = JSON.parse(stored);
+          setIsInRoster(rosters.some(p => p.id === data.id));
+        } */
       } catch (err) {
         console.error("Failed to fetch:", err);
       } finally {
@@ -46,10 +56,38 @@ const PokemonDetails = () => {
         stats: pokemon.stats,
         types: pokemon.types.map(t => t.type.name)
       };
-      roster.unshift(pokemonData);
-      localStorage.setItem(pokeStorage, JSON.stringify(roster));
+      // roster.unshift(pokemonData);
+      const updatedRoster = [pokemonData, ...roster];
+
+      localStorage.setItem(pokeStorage, JSON.stringify(updatedRoster));
       setIsInRoster(true);
+      setRoster(updatedRoster);
+      showToast(
+        <div className="text-center text-xl">
+          <p>
+            Pokemon{" "}
+            <span className="font-bold text-green-300 text-2xl">
+              {pokemon.name}
+            </span>{" "}
+            added to your roster.
+          </p>
+        </div>,
+        "success"
+      );
+      return;
     }
+
+    showToast(
+      <div className="text-center text-xl">
+        <p>
+          <span className="font-bold text-green-300 text-2xl">
+            {pokemon.name}
+          </span>{" "}
+          Pokemon already added to your roster.
+        </p>
+      </div>,
+      "info"
+    );
   };
 
   if (loading) return <p>Loading...</p>;

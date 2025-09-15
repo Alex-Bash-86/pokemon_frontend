@@ -5,3 +5,7 @@
 @plugin "daisyui" {
   themes: dark --default;
 }
+
+.Toastify__toast {
+  font-family: "Monaspace Xenon Var", sans-serif !important;
+}
