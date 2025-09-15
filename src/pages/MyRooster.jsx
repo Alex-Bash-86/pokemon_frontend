@@ -1,10 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import AuthContext from "../contexts/AuthContext.jsx";
+
+import { useToast } from "../contexts/ToasterContext.jsx";
 
 const pokeStorage = "pokemon_roster";
 const fightStorage = "fight_pokemon";
 
 const MyRoster = () => {
+  const { user, setUser, isRefreshing, setIsRefreshing } = useContext(
+    AuthContext
+  );
+  const { showToast } = useToast();
   const [roster, setRoster] = useState([]);
   const [fightingPokemon, setfightingPokemon] = useState([]);
 
@@ -58,6 +65,19 @@ const MyRoster = () => {
     const updated = roster.filter(p => p.id !== id);
     localStorage.setItem(pokeStorage, JSON.stringify(updated));
     setRoster(updated);
+
+    showToast(
+      <div className="text-center text-xl">
+        <p>
+          Pokemon{" "}
+          <span className="font-bold text-green-300 text-2xl">
+            {roster.find(p => p.id === id).name}
+          </span>{" "}
+          removed from your roster successfully.
+        </p>
+      </div>,
+      "success"
+    );
   };
 
   const handleChoose = id => {
@@ -79,8 +99,44 @@ const MyRoster = () => {
     return [element, ...arr.filter((_, i) => i !== index)];
   }
 
-  if (roster.length === 0) {
-    return <p className="text-center mt-8">No Pokémon in your roster yet.</p>;
+  if (isRefreshing) {
+    return (
+      <div className="w-full grid grid-cols-2 place-items-center">
+        <div className="flex w-52 flex-col gap-4">
+          <div className="skeleton h-32 w-full"></div>
+          <div className="skeleton h-4 w-28"></div>
+          <div className="skeleton h-4 w-full"></div>
+          <div className="skeleton h-4 w-full"></div>
+        </div>
+        <div className="flex w-52 flex-col gap-4">
+          <div className="skeleton h-32 w-full"></div>
+          <div className="skeleton h-4 w-28"></div>
+          <div className="skeleton h-4 w-full"></div>
+          <div className="skeleton h-4 w-full"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (pokemonRosters?.length === 0) {
+    showToast(
+      <div className="text-center text-xl">
+        Please Add Pokemon to your roster to be able to fight.
+      </div>,
+      "info"
+    );
+
+    return (
+      <div className="text-center flex flex-col justify-center items-center  text-4xl mt-8 relative top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 space-y-4">
+        <p>No Pokémons in your roster yet.</p>
+        <button
+          className="btn btn-xl bg-white  text-slate-700 hover:bg-slate-600 hover:text-white rounded-lg"
+          onClick={() => navigate("/")}
+        >
+          Back to Home
+        </button>
+      </div>
+    );
   }
 
   return (

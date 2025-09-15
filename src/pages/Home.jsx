@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 import pokeselected from "../assets/pokeselected.webp";
 import pokeunselected from "../assets/pokeunselected.webp";
+import { useToast } from "../contexts/ToasterContext.jsx";
+import { toast } from "react-toastify";
 
 const Home = () => {
+  const { showToast } = useToast();
   const navigate = useNavigate();
+
+  const location = useLocation();
   const [data, setData] = useState();
   const [error, setError] = useState();
   const [loading, setLoading] = useState();
@@ -53,23 +58,31 @@ const Home = () => {
 
   // todo: add to roster
   const handleAddToRoster = id => {
+    // Directly access the Pokémon data using the ID
+    // const foundPokemon = data[id];
     const foundPokemon = data.find(element => element.id === id);
 
+    // If the Pokémon is not found, exit early
     if (!foundPokemon) return;
-    if (!pokemonRosters.some(element => element.id === id)) {
-      const pokemonData = {
-        id: id,
-        name: foundPokemon.name,
-        spriteUrl: foundPokemon.sprites.other.dream_world.front_default,
-        stats: foundPokemon.stats,
-        types: foundPokemon.types.map(t => t.type.name)
-      };
 
-      const updated = [pokemonData, ...pokemonRosters];
-      localStorage.setItem("pokemon_roster", JSON.stringify(updated));
-      setIsInRoster(true);
-      setPokemonRosters(updated);
-    }
+    // Check if the Pokémon is already in the roster
+    const isAlreadyInRoster = pokemonRosters.some(pokemon => pokemon.id === id);
+    if (isAlreadyInRoster) return;
+
+    // Prepare the Pokémon data to add to the roster
+    const pokemonData = {
+      id,
+      name: foundPokemon.name,
+      spriteUrl: foundPokemon.sprites.other.dream_world.front_default,
+      stats: foundPokemon.stats,
+      types: foundPokemon.types.map(type => type.type.name)
+    };
+
+    const updatedRoster = [pokemonData, ...pokemonRosters];
+
+    localStorage.setItem("pokemon_roster", JSON.stringify(updatedRoster));
+    // Update the roster and sync with local storage
+    setPokemonRosters(updatedRoster);
   };
 
   const handleRemoveFromRoster = id => {
@@ -137,14 +150,14 @@ const Home = () => {
                           onClick={() => handleRemoveFromRoster(element.id)}
                           src={pokeselected}
                           alt="selected"
-                          className="h-8 w-8 cursor-pointer aspect-square object-contain"
+                          className="h-10 w-10 cursor-pointer aspect-square object-contain"
                         />
                       ) : (
                         <img
                           onClick={() => handleAddToRoster(element.id)}
                           src={pokeunselected}
                           alt="unselected"
-                          className="h-8 w-8 cursor-pointer aspect-square object-contain"
+                          className="h-10 w-10 cursor-pointer aspect-square object-contain"
                         />
                       )}
                     </p>

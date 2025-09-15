@@ -1,28 +1,45 @@
 import { useState } from "react";
 import { useContext } from "react";
-import { AuthContext } from "../contexts/AuthContext";
+import AuthContext from "../contexts/AuthContext.jsx";
+
+import { signup } from "../data/auth.js";
+import { useNavigate } from "react-router";
 
 const Signup = () => {
+  const { user, setUser } = useContext(AuthContext);
+
+  const navigate = useNavigate();
+
   const [formState, setFormState] = useState({
     username: "",
-    password: "",
+    password: ""
   });
   const [confirmPW, setConfirmPW] = useState("");
 
-  const { signup } = useContext(AuthContext);
+  const handleInput = e =>
+    setFormState(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleInput = (e) =>
-    setFormState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
+    if (!formState.username || !formState.password) {
+      // toast.error("All fields are required");
+      /*  throw new Error("All fields are required"); */
+      return;
+    }
     if (confirmPW !== formState.password) return;
-    //alert("SIGNUP SUCCESS");
-    signup(formState);
+
+    try {
+      //alert("SIGNUP SUCCESS");
+      const data = await signup(formState);
+      setUser(data.data);
+      navigate("/battle");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-base-100">
+    <div className="flex items-center justify-center h-full bg-base-100">
       <form onSubmit={handleSubmit} className="w-full max-w-2xl">
         <fieldset className="fieldset bg-base-200 border border-base-300 p-8 rounded-2xl shadow-xl">
           <legend className="fieldset-legend text-3xl font-bold text-white mb-6 text-center">
@@ -75,7 +92,10 @@ const Signup = () => {
             </p>
 
             {/* Confirm Password */}
-            <label className="fieldset-label text-lg" htmlFor="password-confirm">
+            <label
+              className="fieldset-label text-lg"
+              htmlFor="password-confirm"
+            >
               Confirm Password
             </label>
             <input
@@ -88,16 +108,19 @@ const Signup = () => {
               required
               placeholder="Confirm Password"
               title="Must match Password"
-              onChange={(e) => setConfirmPW(e.target.value)}
+              onChange={e => setConfirmPW(e.target.value)}
               value={confirmPW}
               id="password-confirm"
             />
             {confirmPW && confirmPW !== formState.password && (
-              <p className="validator-hint hidden">Passwords don&apos;t match.</p>
+              <p className="validator-hint hidden">
+                Passwords don&apos;t match.
+              </p>
             )}
 
             {/* Button */}
             <button
+              type="button"
               disabled={!confirmPW || confirmPW !== formState.password}
               className="btn btn-neutral btn-lg w-full mt-4"
             >

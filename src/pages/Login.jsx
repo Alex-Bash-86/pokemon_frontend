@@ -1,44 +1,63 @@
 import { useState, useContext } from "react";
-import { AuthContext } from "../contexts/AuthContext";
+import AuthContext from "../contexts/AuthContext.jsx";
+import { login } from "../data/auth.js";
+import { useNavigate } from "react-router";
 
 const Login = () => {
+  const { user, setUser, isRefreshing, setIsRefreshing } = useContext(
+    AuthContext
+  );
+
+  const navigate = useNavigate();
   const [formState, setFormState] = useState({
     username: "",
-    password: "",
+    password: ""
   });
 
-  const [isOpen, setIsOpen] = useState(true);
+  // const [isOpen, setIsOpen] = useState(true);
 
-  const { login } = useContext(AuthContext);
+  const handleInput = e =>
+    setFormState(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleInput = (e) =>
-    setFormState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    login(formState);
-    setIsOpen(false);
+    if (!formState.username || !formState.password) {
+      // toast.error("All fields are required");
+      /*  throw new Error("All fields are required"); */
+      return;
+    }
+
+    try {
+      const data = await login(formState);
+
+      localStorage.setItem("user", JSON.stringify(data.data));
+      setUser(data.data);
+      navigate("/battle");
+      // setIsOpen(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  if (!isOpen) return null;
+  // if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+    <div className=" inset-0 flex items-center justify-center h-full ">
       <form
         onSubmit={handleSubmit}
-        className="bg-base-200 w-full max-w-md p-8 rounded-2xl shadow-2xl relative"
+        className="bg-base-200 w-full max-w-xl p-8 rounded-2xl shadow-2xl "
       >
         {/* Close Button */}
-        <button
+        {/*      <button
           type="button"
           onClick={() => setIsOpen(false)}
           className="absolute top-4 right-4 text-xl font-bold text-gray-700 hover:text-black"
         >
           &times;
         </button>
-
-        <fieldset className="flex flex-col gap-6">
-          <legend className="text-2xl font-bold text-center text-white mb-4">
+ */}
+        <fieldset className=" flex flex-col gap-6">
+          <legend className="text-2xl font-bold text-center text-white mb-4 ">
             Login
           </legend>
 
