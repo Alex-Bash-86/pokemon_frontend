@@ -166,7 +166,7 @@ const Battle = () => {
   const handlesSaveScore = async e => {
     e.preventDefault();
     try {
-      const data = await fetch("http://localhost:3000/leaderboard", {
+      const data = await fetch("http://localhost:3000/leaderboard/update", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
