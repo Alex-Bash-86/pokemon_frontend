@@ -150,12 +150,14 @@ const Battle = () => {
       setHaveWin(false);
     } else if (myNumberOfWins > numberOfComputerWins) {
       const points = myNumberOfWins - numberOfComputerWins;
+
+      console.log("points", user.score + points);
       setMessage(
         `${results[0].pokemonFighter.name},You won with ${points} Points  !`
       );
       setHaveWin(true);
       setUser(prev => {
-        return { ...prev, score: prev.score + points };
+        return { ...prev, score: Number(points) };
       });
     } else {
       setMessage("You lost");
